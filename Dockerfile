@@ -1,4 +1,5 @@
 FROM centos:latest
+MAINTAINER cipepser
 
 RUN yum install -y git
 
@@ -22,7 +23,9 @@ RUN cd ssl														&& \
 	 openssl genrsa 2048 > server.key
 RUN cd ssl														&& \
 	 openssl req -new -key server.key > server.crt		\
-	 -subj "/C=JP"  \
+	 -subj "/C=JP"
 #	 -keyout /ssl/a.key \
 #	 -out /ssl/server.crt
 #	 mv -f ./server.crt ../examples/h2o
+
+COPY h2o.conf /h2o/examples/h2o/
