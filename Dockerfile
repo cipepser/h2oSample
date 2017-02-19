@@ -8,24 +8,21 @@ RUN yum install -y cmake libyaml-devel zlib zlib-devel openssl-devel libssl-#dev
 
 # RUN cd /etc
 RUN git clone https://github.com/h2o/h2o.git
-RUN cd /h2o													&& \
-	 git submodule update --init --recursive		&& \
-	 cmake .													&& \
-	 cmake -DWITH_BUNDLED_SSL=on .					&& \
-	 make														&& \
-	 make install
-
+RUN cd /h2o                    && \
+    git submodule update --init --recursive    && \
+    cmake .                    && \
+    cmake -DWITH_BUNDLED_SSL=on .        && \
+    make                    && \
+    make install
 
 RUN yum install -y openssl
 
 RUN mkdir ssl
-RUN cd ssl														&& \
-	 openssl genrsa 2048 > server.key
-RUN cd ssl														&& \
-	 openssl req -new -key server.key > server.crt		\
-	 -subj "/C=JP"
-#	 -keyout /ssl/a.key \
-#	 -out /ssl/server.crt
-#	 mv -f ./server.crt ../examples/h2o
+
+RUN cd ssl                    && \
+    openssl genrsa 2048 > server.key
+RUN cd ssl                    && \
+    openssl req -new -key server.key > server.crt    \
+            -subj "/C=JP" 
 
 COPY h2o.conf /h2o/examples/h2o/
